@@ -1,0 +1,42 @@
+{
+  "name": "newswallet",
+  "version": "1.0.0",
+  "description": "A restful api for newswallet client app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basebandit/NewsWallet.git"
+  },
+  "keywords": [
+    "News",
+    "Wallet",
+    "Api",
+    "Nodejs",
+    "Express",
+    "Node",
+    "Api",
+    "Express",
+    "Api",
+    "NewsWallet"
+  ],
+  "author": "Basebandit",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/basebandit/NewsWallet/issues"
+  },
+  "homepage": "https://github.com/basebandit/NewsWallet#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.6",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.4"
+  }
+}
