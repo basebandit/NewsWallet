@@ -11,15 +11,25 @@ const ArticleSchema = new Schema(
         articleImage: { type: String },
         origin: { type: String, required: [true, "Can't be blank"] },
         originUrl: { type: String, unique: true },
-        categoryList: [{ type: String }],
+        category: [{ type: String }],
         views: { type: Number, default: 0 },
         favoritesCount: { type: Number, default: 0 }
     },
     { timestamps: true }
 );
 
-ArticleSchema.methods.updateFavoritesCount = function() {
-    const updates = { $inc: { loginAttempts: 1 } };
+/**
+ * Increment favoritesCount by 1
+ */
+ArticleSchema.methods.incFavoritesCount = function() {
+    const updates = { $inc: { favoritesCount: 1 } };
+    return this.updateOne(updates);
+};
+/**
+ * Increment views by one
+ */
+ArticleSchema.methods.incViews = function() {
+    const updates = { $inc: { views: 1 } };
     return this.updateOne(updates);
 };
 
