@@ -154,7 +154,7 @@ UserSchema.statics.authenticate = function(username, password) {
             if (!user) {
                 reject(new Error("No User"));
             }
-            user.getAuthenticated(username, password, (err, user, reason) => {
+            self.getAuthenticated(username, password, (err, user, reason) => {
                 if (err) {
                     reject(err);
                 }
