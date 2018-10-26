@@ -29,7 +29,6 @@ const app = express();
 
 const port = process.env.PORT;
 
-// const uri = `mongodb://appuser:newswallet@localhost:14045/newswallet`;
 const uri = `mongodb://${config.user}:${config.pwd}@${config.host}:${
     config.port
 }/${config.db}`;
