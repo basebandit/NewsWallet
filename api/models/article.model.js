@@ -11,7 +11,7 @@ const ArticleSchema = new Schema(
         articleImage: { type: String },
         origin: { type: String, required: [true, "Can't be blank"] },
         originUrl: { type: String, unique: true },
-        category: [{ type: String }],
+        category: [{ type: String, ref: "Category" }],
         views: { type: Number, default: 0 },
         favoritesCount: { type: Number, default: 0 }
     },
