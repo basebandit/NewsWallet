@@ -11,7 +11,7 @@ exports.verify = (req, res, next) => {
                 const { username } = decoded;
                 const user = await User.findOne({ username: username });
                 if (!user) {
-                    return res.status(404).json({ message: "not found" });
+                    return res.status(404).json({ message: "Not found" });
                 }
                 next();
             });
@@ -19,6 +19,6 @@ exports.verify = (req, res, next) => {
             return res.status(400).json({ message: "Bad request" });
         }
     } else {
-        res.status(403).json({ message: "Forbidden" });
+        res.status(401).json({ message: "Unauthorized" });
     }
 };
