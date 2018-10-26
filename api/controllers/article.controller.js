@@ -38,3 +38,9 @@ exports.createArticle = async (req, res) => {
         res.status(400).json({ message: "already exists" });
     }
 };
+
+// exports.readArticle = async (req, res) => {
+//     if(req.param){
+
+//     }
+// };
