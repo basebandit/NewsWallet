@@ -33,6 +33,17 @@ const loginUserSchema = Joi.object().keys({
         .required()
 });
 
+const createArticleSchema = Joi.object().keys({
+    title: Joi.string()
+        .min(2)
+        .required(),
+    description: Joi.string().min(8),
+    author: Joi.string(),
+    category: Joi.string(),
+    origin: Joi.string().required(),
+    originUrl: Joi.string().required()
+});
+
 /**
  * @description Will be exposed as middleware for validating user input in the create user route
  *
@@ -67,6 +78,19 @@ exports.login = function(req, res, next) {
         })
         .catch(validationError => {
             const errorMessage = validationError.details.map(d => d.message);
-            res.status(400).json({ message: errorMessage });
+            res.status(400).send({ message: errorMessage });
+        });
+};
+
+exports.article = function(req, res, next) {
+    createArticleSchema
+        .validate(req.body, { abortEarly: false })
+        .then(validatedArticle => {
+            log.info(`user ${JSON.stringify(validatedArticle)} created`);
+            next();
+        })
+        .catch(validationError => {
+            const errorMessage = validationError.details.map(d => d.message);
+            res.status(400).send({ message: errorMessage });
         });
 };
