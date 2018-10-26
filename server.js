@@ -6,10 +6,22 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const log = require("simple-node-logger").createSimpleLogger();
 const config = require("./config");
+const rfs = require("rotating-file-stream");
+const path = require("path");
+const fs = require("fs");
 
 const isProduction = process.env.NODE_ENV === "production";
 
-log.info(isProduction);
+const logDirectory = path.join(__dirname, "log");
+
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+
+// create a rotating write stream
+const accessLogStream = rfs("access.log", {
+    interval: "1d", // rotate daily
+    path: logDirectory
+});
 
 const userRoutes = require("./api/routes/user.route");
 const articleRoutes = require("./api/routes/article.route");
@@ -30,20 +42,32 @@ app.use(cors()); //set necessary headers to allow cors
 app.use(helmet()); //add security headers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); //accept any type
-app.use(morgan("dev"));
+if (isProduction) {
+    app.use(morgan("combined", { stream: accessLogStream })); // log http requests
+} else {
+    app.use(morgan("dev"));
+}
 app.use("/uploads", express.static("uploads")); //expose static uploads file to world
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/article", articleRoutes);
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(
-    uri,
-    { useNewUrlParser: true }
-);
-
-//To avoid deprecated warning on latest mongoose version when creating unique indexes
-mongoose.set("useCreateIndex", true);
+if (isProduction) {
+    mongoose.connect(
+        uri,
+        { useNewUrlParser: true }
+    );
+    //To avoid deprecated warning on latest mongoose version when creating unique indexes
+    mongoose.set("useCreateIndex", true);
+} else {
+    mongoose.connect(
+        uri,
+        { useNewUrlParser: true }
+    );
+    mongoose.set("debug", true);
+    mongoose.set("useCreateIndex", true);
+}
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -53,18 +77,32 @@ app.use((req, res, next) => {
 });
 
 //Error Handlers
-app.use((err, req, res) => {
-    log.err(err.stack);
+if (!isProduction) {
+    app.use((err, req, res) => {
+        log.err(err.stack);
 
-    res.status(err.status || 500);
+        res.status(err.status || 500);
 
-    res.json({
-        errors: {
-            message: err.message,
-            error: err
-        }
+        res.json({
+            errors: {
+                message: err.message,
+                error: err
+            }
+        });
     });
-});
+} else {
+    // production error handler
+    // no stacktraces leaked to user
+    app.use((err, req, res) => {
+        res.status(err.status || 500);
+        res.json({
+            errors: {
+                message: err.message,
+                errors: {}
+            }
+        });
+    });
+}
 
 //let's start our server...
 mongoose.connection.once("open", () => {
