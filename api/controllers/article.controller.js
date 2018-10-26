@@ -17,16 +17,35 @@ exports.createArticle = async (req, res) => {
                     articleImage: req.file.path || "",
                     origin: req.body.origin,
                     originUrl: req.body.originUrl,
-                    categoryList: category._id
+                    category: category._id
                 });
+
+                article = await article.save();
             } else {
                 category = new Category({
                     title: req.body.category
                 });
+                //check if article exists before creating category
+                article = await Article.findOne({ originUrl: req.body.originUrl });
 
-                category = await category.save();
+                if (!article) {
+                    category = await category.save();
+
+                    article = new Article({
+                        title: req.body.title,
+                        description: req.body.description,
+                        author: req.body.author,
+                        articleImage: req.file.path || "",
+                        origin: req.body.origin,
+                        originUrl: req.body.originUrl,
+                        category: category._id
+                    });
+
+                    article = await article.save();
+                } else {
+                    return res.status(400).json({ message: "already exists" });
+                }
             }
-            article = await article.save();
         }
 
         res.status(200).json({
