@@ -1,5 +1,6 @@
 const article = require("../controllers/article.controller");
 const auth = require("../services/auth.service");
+const validate = require("../services/validate.service");
 const express = require("express");
 const multer = require("multer");
 
@@ -35,8 +36,9 @@ router.post(
     "/create",
     auth.verify,
     upload.single("articleImage"),
+    validate.article,
     article.createArticle
 );
-// router.get("/read", validate.login, user.loginUser);
+// router.get("/:article", article.readArticle);
 
 module.exports = router;
