@@ -47,7 +47,7 @@ const createArticleSchema = Joi.object().keys({
 });
 
 const retrieveArticleSchema = Joi.object().keys({
-    article: Joi.string().min(2)
+    title: Joi.string().min(2)
 });
 
 const retrieveArticlesSchema = Joi.object().keys({
