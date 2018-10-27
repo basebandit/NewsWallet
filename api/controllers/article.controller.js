@@ -2,8 +2,12 @@ const Article = require("../models/article.model");
 const Category = require("../models/category.model");
 const log = require("simple-node-logger").createSimpleLogger();
 
-exports.createArticle = async (req, res) => {
-    log.info(req.file);
+/**
+ * @description Create an article
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.createArticle = async (req, res, next) => {
     try {
     //Lets check if this category already exists before creating it
         let article;
@@ -13,8 +17,8 @@ exports.createArticle = async (req, res) => {
                 article = new Article({
                     title: req.body.title,
                     description: req.body.description,
-                    author: req.body.author,
-                    articleImage: req.file.path || "",
+                    author: req.body.author ? req.body.author : "",
+                    articleImage: req.file ? req.file.path : "",
                     origin: req.body.origin,
                     originUrl: req.body.originUrl,
                     category: category._id
@@ -53,17 +57,69 @@ exports.createArticle = async (req, res) => {
             article: article
         });
     } catch (err) {
-        log.error(err.message);
-        res.status(400).json({ message: "already exists" });
+        next(err);
     }
 };
 
-exports.readArticle = async (req, res) => {
-    const { title } = req.param;
-    let article = await Article.findOne({ title: title });
+/**
+ * @description Retrieve an article
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.retrieveArticle = async (req, res, next) => {
+    const title = req.query.title;
+    log.info(title);
+    try {
+        let article = await Article.findOne({ title: title });
 
-    if (article) {
-        return res.status(200).json({ article: article });
+        if (article) {
+            return res.status(200).json({ article: article });
+        }
+        res.status(404).json({ message: "no such article" });
+    } catch (err) {
+        next(err);
     }
-    res.status(404).json({ message: "no such article" });
+};
+
+/**
+ * @description Retrieve all articles
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.retrieveArticles = async (req, res, next) => {
+    try {
+        let articles = await Article.find({});
+        log.info(`articles ${JSON.stringify(articles)} `);
+        //articles found
+        if (articles) {
+            return res.status(200).json({ articles: articles });
+        }
+        res.status(404).json({ message: "no articles" });
+    } catch (err) {
+        next(err);
+    }
+};
+
+/**
+ * @description Delete an article
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.deleteArticle = async (req, res, next) => {
+    const { title } = req.param;
+    try {
+        let article = await Article.findOneAndDelete({
+            title: title
+        });
+        log.info(`article ${JSON.stringify(article)} deleted`);
+        //article removed successfully
+        if (article) {
+            return res.status(200).json({ message: "delete successful" });
+        }
+        res.status(404).json("no such article");
+    } catch (err) {
+        next(err);
+    }
 };
