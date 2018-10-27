@@ -44,6 +44,11 @@ const createArticleSchema = Joi.object().keys({
     originUrl: Joi.string().required()
 });
 
+const readArticleSchema = Joi.object().keys({
+    title: Joi.string()
+        .min(2)
+        .required()
+});
 /**
  * @description Will be exposed as middleware for validating user input in the create user route
  *
@@ -81,12 +86,30 @@ exports.login = function(req, res, next) {
             res.status(400).send({ message: errorMessage });
         });
 };
-
-exports.article = function(req, res, next) {
+/**
+ * @description Will be exposed as middleware for validating user input in the create article route
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.createArticle = function(req, res, next) {
     createArticleSchema
         .validate(req.body, { abortEarly: false })
         .then(validatedArticle => {
             log.info(`user ${JSON.stringify(validatedArticle)} created`);
+            next();
+        })
+        .catch(validationError => {
+            const errorMessage = validationError.details.map(d => d.message);
+            res.status(400).send({ message: errorMessage });
+        });
+};
+
+exports.readArticle = function(req, res, next) {
+    readArticleSchema
+        .validate(req.param, { abortEarly: false })
+        .then(validatedArticle => {
+            log.info(`article ${JSON.stringify(validatedArticle)} found`);
             next();
         })
         .catch(validationError => {
