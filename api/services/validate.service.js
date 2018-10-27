@@ -37,17 +37,26 @@ const createArticleSchema = Joi.object().keys({
     title: Joi.string()
         .min(2)
         .required(),
-    description: Joi.string().min(8),
+    description: Joi.string()
+        .min(8)
+        .required(),
     author: Joi.string(),
     category: Joi.string(),
     origin: Joi.string().required(),
     originUrl: Joi.string().required()
 });
 
-const readArticleSchema = Joi.object().keys({
-    title: Joi.string()
-        .min(2)
-        .required()
+const retrieveArticleSchema = Joi.object().keys({
+    article: Joi.string().min(2)
+});
+
+const retrieveArticlesSchema = Joi.object().keys({
+    page: Joi.number()
+        .integer()
+        .positive(),
+    limit: Joi.number()
+        .integer()
+        .positive()
 });
 /**
  * @description Will be exposed as middleware for validating user input in the create user route
@@ -65,7 +74,7 @@ exports.register = function(req, res, next) {
         })
         .catch(validationError => {
             const errorMessage = validationError.details.map(d => d.message);
-            res.status(400).json({ message: errorMessage });
+            next(new Error(errorMessage));
         });
 };
 /**
@@ -83,7 +92,8 @@ exports.login = function(req, res, next) {
         })
         .catch(validationError => {
             const errorMessage = validationError.details.map(d => d.message);
-            res.status(400).send({ message: errorMessage });
+
+            next(new Error(errorMessage));
         });
 };
 /**
@@ -101,19 +111,45 @@ exports.createArticle = function(req, res, next) {
         })
         .catch(validationError => {
             const errorMessage = validationError.details.map(d => d.message);
-            res.status(400).send({ message: errorMessage });
+            next(new Error(errorMessage));
         });
 };
 
 exports.readArticle = function(req, res, next) {
-    readArticleSchema
-        .validate(req.param, { abortEarly: false })
+    retrieveArticleSchema
+        .validate(req.query, { abortEarly: false })
         .then(validatedArticle => {
             log.info(`article ${JSON.stringify(validatedArticle)} found`);
             next();
         })
         .catch(validationError => {
             const errorMessage = validationError.details.map(d => d.message);
-            res.status(400).send({ message: errorMessage });
+            next(new Error(errorMessage));
+        });
+};
+
+exports.fetchArticles = function(req, res, next) {
+    retrieveArticlesSchema
+        .validate(req.query, { abortEarly: false })
+        .then(validatedArticles => {
+            log.info(`articles ${JSON.stringify(validatedArticles)} retrieved`);
+            next();
+        })
+        .catch(validationError => {
+            const errorMessage = validationError.details.map(d => d.message);
+            next(new Error(errorMessage));
+        });
+};
+
+exports.deleteArticle = function(req, res, next) {
+    retrieveArticleSchema
+        .validate(req.query, { abortEarly: false })
+        .then(validatedArticle => {
+            log.info(`article ${JSON.stringify(validatedArticle)} found`);
+            next();
+        })
+        .catch(validationError => {
+            const errorMessage = validationError.details.map(d => d.message);
+            next(new Error(errorMessage));
         });
 };
