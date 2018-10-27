@@ -49,16 +49,27 @@ const upload = multer({
  *
  *********************************************/
 
-//Only logged in users can create articles
+//Create article
 router.post(
-    "/create",
+    "/",
     auth.verify,
     upload.single("articleImage"),
     validate.createArticle,
     article.createArticle
 );
 
-//Anyone can read article
-router.get("/:article", validate.readArticle, article.readArticle);
+//Retrieve article
+router.get("/", validate.readArticle, article.retrieveArticle);
+
+//Retrieve articles
+router.get("/", article.retrieveArticles);
+
+//Delete article
+router.delete(
+    "/:article",
+    auth.verify,
+    validate.deleteArticle,
+    article.deleteArticle
+);
 
 module.exports = router;
