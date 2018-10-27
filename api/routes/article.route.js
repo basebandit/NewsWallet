@@ -6,6 +6,9 @@ const multer = require("multer");
 
 const router = express.Router();
 
+/**
+ * multer storage options and destination folder
+ */
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, "./uploads/");
@@ -15,6 +18,10 @@ const storage = multer.diskStorage({
     }
 });
 
+/**
+ * Filter function for multer to specify types of
+ * images we require
+ */
 const fileFilter = (req, file, cb) => {
     //reject a file
     if (file.mimtype === "image/jpeg" || file.mimetype === "image/png") {
@@ -23,7 +30,10 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 };
-
+/**
+ * Multer configuration for uploading files
+ * We are limiting files to 5mb
+ */
 const upload = multer({
     storage: storage,
     limits: {
@@ -32,13 +42,23 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
+/*********************************************
+ * Article Routes
+ *
+ * @see Articles with auth.verify are protected
+ *
+ *********************************************/
+
+//Only logged in users can create articles
 router.post(
     "/create",
     auth.verify,
     upload.single("articleImage"),
-    validate.article,
+    validate.createArticle,
     article.createArticle
 );
-// router.get("/:article", article.readArticle);
+
+//Anyone can read article
+router.get("/:article", validate.readArticle, article.readArticle);
 
 module.exports = router;
