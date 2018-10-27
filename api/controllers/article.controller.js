@@ -70,7 +70,9 @@ exports.retrieveArticle = async (req, res, next) => {
     const title = req.query.title;
     log.info(title);
     try {
-        let article = await Article.findOne({ title: title });
+        let article = await Article.findOne({ title: title })
+            .populate("category")
+            .exec();
 
         if (article) {
             return res.status(200).json({ article: article });
@@ -88,6 +90,7 @@ exports.retrieveArticle = async (req, res, next) => {
  * @param {Object} res HTTP Response Object
  */
 exports.retrieveArticles = async (req, res, next) => {
+    let page = req.query.page ? req.query.page : "";
     try {
         let articles = await Article.find({});
         log.info(`articles ${JSON.stringify(articles)} `);
