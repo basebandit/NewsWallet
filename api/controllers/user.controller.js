@@ -11,10 +11,10 @@ const genJWT = function(user) {
     return jwt.sign(
         {
             id: user._id,
-            username: user.username
+            username: user.username,
+            exp: expiry
         },
-        secret,
-        { expiresIn: expiry }
+        secret
     );
 };
 
