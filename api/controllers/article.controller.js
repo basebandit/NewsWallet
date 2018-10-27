@@ -58,8 +58,12 @@ exports.createArticle = async (req, res) => {
     }
 };
 
-// exports.readArticle = async (req, res) => {
-//     if(req.param){
+exports.readArticle = async (req, res) => {
+    const { title } = req.param;
+    let article = await Article.findOne({ title: title });
 
-//     }
-// };
+    if (article) {
+        return res.status(200).json({ article: article });
+    }
+    res.status(404).json({ message: "no such article" });
+};
