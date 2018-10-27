@@ -25,6 +25,7 @@ const accessLogStream = rfs("access.log", {
 
 const userRoutes = require("./api/routes/user.route");
 const articleRoutes = require("./api/routes/article.route");
+
 const app = express();
 
 const port = process.env.PORT;
@@ -34,6 +35,7 @@ const uri = `mongodb://${config.user}:${config.pwd}@${config.host}:${
 }/${config.db}`;
 
 log.info(uri);
+
 /**
  * Middlewares
  */
