@@ -1,4 +1,5 @@
 const express = require("express");
+const { AssertionError } = require("assert");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -42,15 +43,15 @@ log.info(uri);
 app.use(cors()); //set necessary headers to allow cors
 app.use(helmet()); //add security headers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); //accept any type
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require("./api/routes"));
+
 if (isProduction) {
     app.use(morgan("combined", { stream: accessLogStream })); // log http requests
 } else {
     app.use(morgan("dev"));
 }
-app.use("/uploads", express.static("uploads")); //expose static uploads file to world
-app.use("/api/v1/auth", userRoutes);
-app.use("/api/v1/article", articleRoutes);
+app.use("/uploads", express.static("uploads"));
 
 mongoose.Promise = global.Promise;
 
@@ -77,12 +78,13 @@ app.use((req, res, next) => {
     next(err);
 });
 
-//Error Handlers
-if (!isProduction) {
-    app.use((err, req, res) => {
-        log.err(err.stack);
+/* eslint no-unused-vars:["warn",{ignoreRestSiblings:true}] */
 
-        res.status(err.status || 500);
+if (!isProduction) {
+    app.use((err, req, res, next) => {
+        log.error(err.message);
+
+        res.status(err.status || 503);
 
         res.json({
             errors: {
@@ -94,8 +96,8 @@ if (!isProduction) {
 } else {
     // production error handler
     // no stacktraces leaked to user
-    app.use((err, req, res) => {
-        res.status(err.status || 500);
+    app.use((err, req, res, next) => {
+        res.status(err.status || 503);
         res.json({
             errors: {
                 message: err.message,
