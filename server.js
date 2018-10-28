@@ -43,7 +43,7 @@ log.info(uri);
 app.use(cors()); //set necessary headers to allow cors
 app.use(helmet()); //add security headers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require("./api/routes"));
 
 if (isProduction) {
