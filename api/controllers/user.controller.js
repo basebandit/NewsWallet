@@ -35,8 +35,7 @@ exports.createUser = async function(req, res) {
             user: { username: user.username }
         });
     } catch (err) {
-        log.error(err.message);
-        res.status(403).json({ message: "already exists" });
+        next(err);
     }
 };
 
@@ -53,7 +52,6 @@ exports.loginUser = async function(req, res) {
             expiresIn: expiry
         });
     } catch (err) {
-        log.error(err.message);
-        res.status(404).json({ message: "Not found" });
+        next(err);
     }
 };
