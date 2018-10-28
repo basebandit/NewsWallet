@@ -11,14 +11,14 @@ const genJWT = function(user) {
     return jwt.sign(
         {
             id: user._id,
-            username: user.username,
-            exp: expiry
+            username: user.username
         },
-        secret
+        secret,
+        { expiresIn: expiry }
     );
 };
 
-exports.createUser = async function(req, res) {
+exports.createUser = async function(req, res, next) {
     //req.body contains the form submit values
     const { username, email, password } = req.body;
     try {
@@ -39,7 +39,7 @@ exports.createUser = async function(req, res) {
     }
 };
 
-exports.loginUser = async function(req, res) {
+exports.loginUser = async function(req, res, next) {
     //req.body contains the form submit values
     const { username, password } = req.body;
     log.info(username, password);
