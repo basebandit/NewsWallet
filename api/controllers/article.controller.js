@@ -112,6 +112,7 @@ exports.retrieveArticles = async (req, res, next) => {
  */
 exports.deleteArticle = async (req, res, next) => {
     const { title } = req.param;
+    log.info(title);
     try {
         let article = await Article.findOneAndDelete({
             title: title
