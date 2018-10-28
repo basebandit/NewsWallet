@@ -35,7 +35,6 @@ const uri = `mongodb://${config.user}:${config.pwd}@${config.host}:${
     config.port
 }/${config.db}`;
 
-log.info(uri);
 
 /**
  * Middlewares
