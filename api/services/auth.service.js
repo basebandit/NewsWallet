@@ -8,6 +8,9 @@ exports.verify = (req, res, next) => {
         try {
             token = token.split(" ")[1].trim();
             jwt.verify(token, config.authentication.secret, async (err, decoded) => {
+                if (err) {
+                    next(err);
+                }
                 const { username } = decoded;
                 const user = await User.findOne({ username: username });
                 if (!user) {
@@ -16,7 +19,7 @@ exports.verify = (req, res, next) => {
                 next();
             });
         } catch (err) {
-            return res.status(400).json({ message: "Bad request" });
+            next(err);
         }
     } else {
         res.status(401).json({ message: "Unauthorized" });
