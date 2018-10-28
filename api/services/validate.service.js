@@ -50,6 +50,10 @@ const retrieveArticleSchema = Joi.object().keys({
     title: Joi.string().min(2)
 });
 
+const deleteArticleSchema = Joi.object().keys({
+    article: Joi.string().min(2)
+});
+
 const retrieveArticlesSchema = Joi.object().keys({
     page: Joi.number()
         .integer()
@@ -143,7 +147,7 @@ exports.fetchArticles = function(req, res, next) {
 
 exports.deleteArticle = function(req, res, next) {
     retrieveArticleSchema
-        .validate(req.query, { abortEarly: false })
+        .validate(req.param, { abortEarly: false })
         .then(validatedArticle => {
             log.info(`article ${JSON.stringify(validatedArticle)} found`);
             next();
