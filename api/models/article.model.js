@@ -18,5 +18,9 @@ const ArticleSchema = new Schema(
     { timestamps: true }
 );
 
-ArticleSchema.methods.updateFavoritesCount = function() {};
+ArticleSchema.methods.updateFavoritesCount = function() {
+    const updates = { $inc: { loginAttempts: 1 } };
+    return this.updateOne(updates);
+};
+
 module.exports = mongoose.model("Article", ArticleSchema);
