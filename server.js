@@ -4,17 +4,25 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const log = require("simple-node-logger").createSimpleLogger();
+const config = require("./config");
+
+const isProduction = process.env.NODE_ENV === "production";
+
+log.info(isProduction);
 
 const userRoutes = require("./api/routes/user.route");
 const articleRoutes = require("./api/routes/article.route");
 const app = express();
 
-const port = 8080;
+const port = process.env.PORT;
 
-const log = require("simple-node-logger").createSimpleLogger();
+// const uri = `mongodb://appuser:newswallet@localhost:14045/newswallet`;
+const uri = `mongodb://${config.user}:${config.pwd}@${config.host}:${
+    config.port
+}/${config.db}`;
 
-const uri = `mongodb://appuser:newswallet@localhost:14045/newswallet`;
-
+log.info(uri);
 /**
  * Middlewares
  */
