@@ -1,4 +1,5 @@
 const article = require("../controllers/article.controller");
+const auth = require("../services/auth.service");
 const express = require("express");
 const multer = require("multer");
 
@@ -30,7 +31,12 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-router.post("/create", upload.single("articleImage"), article.createArticle);
+router.post(
+    "/create",
+    auth.verify,
+    upload.single("articleImage"),
+    article.createArticle
+);
 // router.get("/read", validate.login, user.loginUser);
 
 module.exports = router;
