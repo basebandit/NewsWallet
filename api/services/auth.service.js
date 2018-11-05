@@ -6,7 +6,7 @@ const User = require("../models/user.model");
  *
  * @author basebandit
  *
- * Validate user
+ * @description Validate user
  */
 
 exports.verify = (req, res, next) => {
