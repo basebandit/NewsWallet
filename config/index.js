@@ -1,3 +1,9 @@
+/**
+ *
+ * @author basebandit
+ *
+ * @description Server config
+ */
 module.exports = {
     user: process.env.DATABASE_USER,
     pwd: process.env.DATABASE_PASS,
