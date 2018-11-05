@@ -1,10 +1,11 @@
 /**
  * @author basebandit
+ *
+ * @description User schema
  */
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
 
 /**
  * Constants
