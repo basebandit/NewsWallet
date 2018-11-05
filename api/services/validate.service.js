@@ -4,7 +4,7 @@ const log = require("simple-node-logger").createSimpleLogger();
  *
  * @author basebandit
  *
- * Validate against malicious user input
+ * @description Validate against malicious user input
  */
 
 const createUserSchema = Joi.object().keys({
