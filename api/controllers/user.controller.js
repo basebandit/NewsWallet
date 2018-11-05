@@ -3,6 +3,13 @@ const jwt = require("jsonwebtoken");
 const config = require("../../config");
 const log = require("simple-node-logger").createSimpleLogger();
 
+/**
+ *
+ * @author basebandit
+ *
+ * @description User CRUD logic
+ */
+
 const secret = config.authentication.secret;
 const expiry = 60 * 6; //6mins
 const genJWT = function(user) {
