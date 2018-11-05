@@ -126,7 +126,7 @@ output
 {"message":"Saved article successful","article":{"category":["5bdff688af7c921b795abb78"],"views":0,"favoritesCount":0,"_id":"5be00b867f3e3c26ea27277d","title":"Reverse Engineering Android Applications","description":"Breaking The Complexity Beyond The Compilerauthor=Basebandit","author":"","articleImage":"","origin":"NsyncLabs","originUrl":"https://nsynclabs.org/security/mobile/reversing-android-applications","slug":"reverse-engineering-android-applications","createdAt":"2018-11-05T09:21:10.993Z","updatedAt":"2018-11-05T09:21:10.993Z","__v":0}}
 ```
 
-##Fetch articles
+## Fetch articles
 
 ```bash
 curl localhost:8080/api/v1/articles/reverse-engineering-android-applications
@@ -138,7 +138,7 @@ output
 {"article":{"category":[{"_id":"5bdff688af7c921b795abb78","title":"android","slug":"android","__v":0}],"views":0,"favoritesCount":0,"_id":"5be00b867f3e3c26ea27277d","title":"Reverse Engineering Android Applications","description":"Breaking The Complexity Beyond The Compilerauthor=Basebandit","author":"","articleImage":"","origin":"NsyncLabs","originUrl":"https://nsynclabs.org/security/mobile/reversing-android-applications","slug":"reverse-engineering-android-applications","createdAt":"2018-11-05T09:21:10.993Z","updatedAt":"2018-11-05T09:21:10.993Z","__v":0}}
 ```
 
-##Fetch articles by category
+## Fetch articles by category
 
 ```bash
 curl localhost:8080/api/v1/articles/category/android
