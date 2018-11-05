@@ -78,7 +78,7 @@ For the api to work you have to set the following environment variables
 
 ## Optional
 
-You can use the database dump which contains sample articles for testing.
+You can use the database dump which contains sample data for testing.
 First create a database named newswallet in your mongo instance. Then
 import as shown here
 
