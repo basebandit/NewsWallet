@@ -1,9 +1,18 @@
 const Article = require("../models/article.model");
 const Category = require("../models/category.model");
 const slugify = require("slug");
+
+/**
+ *
+ * @author basebandit
+ *
+ * @description Article schema
+ */
+
 const log = require("simple-node-logger").createSimpleLogger();
 
 /**
+ *
  * @description Create an article
  * @param {Object} req HTTP Request Object
  * @param {Object} res HTTP Response Object
