@@ -149,3 +149,17 @@ output
 ```bash
 [{"category":[{"_id":"5bdff688af7c921b795abb78","title":"android","slug":"android","__v":0}],"views":0,"favoritesCount":0,"_id":"5bdff688af7c921b795abb79","title":"Reverse Engineering Baseband","description":"Exploiting Android's Baseband Processor With RCE","author":"Basebandit","articleImage":"","origin":"NsyncLab","originUrl":"https://nsynclabs.org/security/web/breaking-the-baseband","slug":"reverse-engineering-baseband","createdAt":"2018-11-05T07:51:36.985Z","updatedAt":"2018-11-05T07:51:36.985Z","__v":0},{"category":[{"_id":"5bdff688af7c921b795abb78","title":"android","slug":"android","__v":0}],"views":0,"favoritesCount":0,"_id":"5bdffae937631f1d70d6ff4a","title":"Reverse Engineering Android Trojan","description":"Banking Trojan The Evil Within","author":"Basebandit","articleImage":"","origin":"NsyncLab","originUrl":"https://nsynclabs.org/security/web/reversing-android-trojans","slug":"reverse-engineering-android-trojan","createdAt":"2018-11-05T08:10:17.866Z","updatedAt":"2018-11-05T08:10:17.866Z","__v":0},{"category":[{"_id":"5bdff688af7c921b795abb78","title":"android","slug":"android","__v":0}],"views":0,"favoritesCount":0,"_id":"5bdffb4d37631f1d70d6ff4b","title":"Reverse Engineering Kotlin Applications","description":"Breaking The Complexity Beyond The Object","author":"Basebandit","articleImage":"","origin":"NsyncLab","originUrl":"https://nsynclabs.org/security/web/reversing-kotlin-applications","slug":"reverse-engineering-kotlin-applications","createdAt":"2018-11-05T08:11:57.524Z","updatedAt":"2018-11-05T08:11:57.524Z","__v":0},{"category":[{"_id":"5bdff688af7c921b795abb78","title":"android","slug":"android","__v":0}],"views":0,"favoritesCount":0,"_id":"5be00b867f3e3c26ea27277d","title":"Reverse Engineering Android Applications","description":"Breaking The Complexity Beyond The Compilerauthor=Basebandit","author":"","articleImage":"","origin":"NsyncLabs","originUrl":"https://nsynclabs.org/security/mobile/reversing-android-applications","slug":"reverse-engineering-android-applications","createdAt":"2018-11-05T09:21:10.993Z","updatedAt":"2018-11-05T09:21:10.993Z","__v":0}]
 ```
+
+## TODO
+
+- Edit article
+- Delete article
+- Add fetch favorite articles
+- Mark article as favorite
+- Unmark article as favorite
+- Create new category
+- Edit category
+- Delete category
+- Fetch categories
+- Fetch popular categories
+- Unit testing
