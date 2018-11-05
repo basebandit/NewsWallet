@@ -1,5 +1,6 @@
 const Article = require("../models/article.model");
 const Category = require("../models/category.model");
+const slugify = require("slug");
 const log = require("simple-node-logger").createSimpleLogger();
 
 /**
@@ -11,23 +12,29 @@ exports.createArticle = async (req, res, next) => {
     try {
     //Lets check if this category already exists before creating it
         let article;
-        if (req.body.category) {
-            let category = await Category.findOne({ title: req.body.category });
+        if (req.body.category && req.body.article) {
+            const { articleTitle, categoryTitle } = req.body;
+
+            let category = await Category.findOne({ title: categoryTitle });
+
+            //Cbeck if category already exists,we just add it to the article as a reference
             if (category) {
                 article = new Article({
-                    title: req.body.title,
+                    title: articleTitle,
                     description: req.body.description,
                     author: req.body.author ? req.body.author : "",
                     articleImage: req.file ? req.file.path : "",
                     origin: req.body.origin,
                     originUrl: req.body.originUrl,
+                    slug: slugify(articleTitle, { lower: true }),
                     category: category._id
                 });
 
                 article = await article.save();
             } else {
                 category = new Category({
-                    title: req.body.category
+                    title: categoryTitle,
+                    slug: slugify(categoryTitle)
                 });
                 //check if article exists before creating category
                 article = await Article.findOne({ originUrl: req.body.originUrl });
@@ -36,12 +43,13 @@ exports.createArticle = async (req, res, next) => {
                     category = await category.save();
 
                     article = new Article({
-                        title: req.body.title,
+                        title: articleTitle,
                         description: req.body.description,
                         author: req.body.author,
-                        articleImage: req.file.path || "",
+                        articleImage: req.file ? req.file.path : "",
                         origin: req.body.origin,
                         originUrl: req.body.originUrl,
+                        slug: slugify(articleTitle, { lower: true }),
                         category: category._id
                     });
 
@@ -67,10 +75,10 @@ exports.createArticle = async (req, res, next) => {
  * @param {Object} res HTTP Response Object
  */
 exports.retrieveArticle = async (req, res, next) => {
-    const title = req.query.title;
-    log.info(title);
+    const slug = req.params.slug;
+    log.info(slug);
     try {
-        let article = await Article.findOne({ title: title })
+        let article = await Article.findOne({ slug: slug })
             .populate("category")
             .exec();
 
@@ -90,10 +98,23 @@ exports.retrieveArticle = async (req, res, next) => {
  * @param {Object} res HTTP Response Object
  */
 exports.retrieveArticles = async (req, res, next) => {
-    let page = req.query.page ? req.query.page : "";
+    const limit = req.query.limit ? Number(req.query.limit) : 1;
+
+    const page = req.query.page ? Number(req.query.page) : 1;
+
+    //calculate no. of documents to skip
+    const offset = limit * page - limit;
+
     try {
-        let articles = await Article.find({});
+        let articles = await Article.find({})
+            .skip(offset)
+            .limit(limit)
+            .sort({ createdAt: "desc" })
+            .populate("category")
+            .exec();
+
         log.info(`articles ${JSON.stringify(articles)} `);
+
         //articles found
         if (articles) {
             return res.status(200).json({ articles: articles });
@@ -127,3 +148,11 @@ exports.deleteArticle = async (req, res, next) => {
         next(err);
     }
 };
+// exports.favoriteArticles = async (req, res, next) => {
+//     try{
+//  let favoriteArticle = await
+//     }catch(err){
+//         next(err);
+//     }
+// };
+// exports.favoriteArticles = async (req, res, next) => {};
