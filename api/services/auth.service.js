@@ -2,6 +2,13 @@ const jwt = require("jsonwebtoken");
 const config = require("../../config");
 const User = require("../models/user.model");
 
+/**
+ *
+ * @author basebandit
+ *
+ * Validate user
+ */
+
 exports.verify = (req, res, next) => {
     let token = req.headers["authorization"];
     if (token && token.indexOf("Bearer") !== -1) {
