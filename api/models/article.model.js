@@ -13,7 +13,8 @@ const ArticleSchema = new Schema(
         originUrl: { type: String, unique: true },
         category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
         views: { type: Number, default: 0 },
-        favoritesCount: { type: Number, default: 0 }
+        favoritesCount: { type: Number, default: 0 },
+        slug: { type: String }
     },
     { timestamps: true }
 );
@@ -23,6 +24,13 @@ const ArticleSchema = new Schema(
  */
 ArticleSchema.methods.incFavoritesCount = function() {
     const updates = { $inc: { favoritesCount: 1 } };
+    return this.updateOne(updates);
+};
+/**
+ * Decrement favoritesCount by 1
+ */
+ArticleSchema.methods.decFavoritesCount = function() {
+    const updates = { $inc: { favoritesCount: -1 } };
     return this.updateOne(updates);
 };
 /**
