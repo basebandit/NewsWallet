@@ -59,14 +59,17 @@ router.post(
 );
 
 //Retrieve article
-router.get("/", validate.readArticle, article.retrieveArticle);
+router.get("/:slug", article.retrieveArticle);
 
 //Retrieve articles
 router.get("/", article.retrieveArticles);
 
+//Retrieve articles in a category
+router.get("/category/:slug", article.retrieveArticlesInCategory);
+
 //Delete article
 router.delete(
-    "/:article",
+    "/:slug",
     auth.verify,
     validate.deleteArticle,
     article.deleteArticle
