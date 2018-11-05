@@ -46,7 +46,7 @@ nvm use v8.11.2
 
 Please use the latest LTS version.
 
-##Verify your node installation
+## Verify your node installation
 
 ```bash
 node -v
