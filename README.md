@@ -76,6 +76,16 @@ For the api to work you have to set the following environment variables
 - DATABASE_HOST
 - JWT_SECRET
 
+## Optional
+
+You can use the database dump which contains sample articles for testing.
+First create a database named newswallet in your mongo instance. Then
+import as shown here
+
+```bash
+mongorestore -d <database_name> <directory_backup>
+```
+
 ## What's inside?
 
 - [express.js](http://expressjs.com) framework
