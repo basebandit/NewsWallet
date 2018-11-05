@@ -1,5 +1,3 @@
-// const UserService = require("../services/user.service");
-// const User = new UserService();
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
