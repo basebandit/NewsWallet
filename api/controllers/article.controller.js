@@ -12,8 +12,10 @@ exports.createArticle = async (req, res, next) => {
     try {
     //Lets check if this category already exists before creating it
         let article;
-        if (req.body.category && req.body.article) {
-            const { articleTitle, categoryTitle } = req.body;
+        log.info(req.body);
+        if (req.body.category && req.body.title) {
+            let articleTitle = req.body.title;
+            let categoryTitle = req.body.category;
 
             let category = await Category.findOne({ title: categoryTitle });
 
@@ -32,14 +34,15 @@ exports.createArticle = async (req, res, next) => {
 
                 article = await article.save();
             } else {
-                category = new Category({
-                    title: categoryTitle,
-                    slug: slugify(categoryTitle)
-                });
                 //check if article exists before creating category
                 article = await Article.findOne({ originUrl: req.body.originUrl });
 
                 if (!article) {
+                    category = new Category({
+                        title: categoryTitle,
+                        slug: slugify(categoryTitle, { lower: true })
+                    });
+
                     category = await category.save();
 
                     article = new Article({
@@ -55,7 +58,7 @@ exports.createArticle = async (req, res, next) => {
 
                     article = await article.save();
                 } else {
-                    return res.status(400).json({ message: "already exists" });
+                    return next(new Error("already exists"));
                 }
             }
         }
@@ -78,9 +81,7 @@ exports.retrieveArticle = async (req, res, next) => {
     const slug = req.params.slug;
     log.info(slug);
     try {
-        let article = await Article.findOne({ slug: slug })
-            .populate("category")
-            .exec();
+        let article = await Article.findOne({ slug: slug }).populate("category");
 
         if (article) {
             return res.status(200).json({ article: article });
