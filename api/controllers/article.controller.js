@@ -93,15 +93,15 @@ exports.retrieveArticle = async (req, res, next) => {
 };
 
 /**
- * @description Retrieve all articles
+ * @description Retrieve all articles.If no page or limit parameter in query,will return all articles
  *
  * @param {Object} req HTTP Request Object
  * @param {Object} res HTTP Response Object
  */
 exports.retrieveArticles = async (req, res, next) => {
-    const limit = req.query.limit ? Number(req.query.limit) : 1;
+    const limit = req.query.limit ? Number(req.query.limit) : 0;
 
-    const page = req.query.page ? Number(req.query.page) : 1;
+    const page = req.query.page ? Number(req.query.page) : 0;
 
     //calculate no. of documents to skip
     const offset = limit * page - limit;
