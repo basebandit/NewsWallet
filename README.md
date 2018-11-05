@@ -154,7 +154,7 @@ output
 
 - Edit article
 - Delete article
-- Add fetch favorite articles
+- Fetch favorite articles
 - Mark article as favorite
 - Unmark article as favorite
 - Create new category
