@@ -125,7 +125,31 @@ exports.retrieveArticles = async (req, res, next) => {
         next(err);
     }
 };
+/**
+ * @description Retrieve an article
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ */
+exports.retrieveArticlesInCategory = async (req, res, next) => {
+    const slug = req.params.slug;
+    log.info(slug);
+    try {
+        let category = await Category.findOne({ slug: slug });
 
+        if (category) {
+            let articles = await Article.find({ category: category._id }).populate(
+                "category"
+            );
+            if (articles) {
+                return res.status(200).json(articles);
+            }
+            return next(new Error("No articles in that category"));
+        }
+        return next(new Error("no such article"));
+    } catch (err) {
+        next(err);
+    }
+};
 /**
  * @description Delete an article
  *
