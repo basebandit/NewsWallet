@@ -1,6 +1,6 @@
 # NewsWallet
 
-> A restful api for news wallet client mobile app
+> A restful api for news wallet mobile client
 
 ## Requirements
 
