@@ -65,6 +65,7 @@ const retrieveArticlesSchema = Joi.object().keys({
  *
  * @param {Object} req HTTP Request Object
  * @param {Object} res HTTP Response Object
+ * @param {Function} Middleware function with access to req and res Objects
  *
  */
 exports.register = function(req, res, next) {
@@ -84,6 +85,7 @@ exports.register = function(req, res, next) {
  *
  * @param {Object} req HTTP Request Object
  * @param {Object} res HTTP Response Object
+ * @param {Function} Middleware function with access to req and res Objects
  */
 exports.login = function(req, res, next) {
     loginUserSchema
@@ -103,6 +105,8 @@ exports.login = function(req, res, next) {
  *
  * @param {Object} req HTTP Request Object
  * @param {Object} res HTTP Response Object
+ *  @param {Function} Middleware function with access to req and res Objects
+ *
  */
 exports.createArticle = function(req, res, next) {
     createArticleSchema
@@ -117,6 +121,14 @@ exports.createArticle = function(req, res, next) {
         });
 };
 
+/**
+ * @description Will be exposed as middleware for validating user input in the retrieve article route
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ * @param {Function} Middleware function with access to req and res Objects
+ *
+ */
 exports.readArticle = function(req, res, next) {
     retrieveArticleSchema
         .validate(req.query, { abortEarly: false })
@@ -130,6 +142,14 @@ exports.readArticle = function(req, res, next) {
         });
 };
 
+/**
+ * @description Will be exposed as middleware for validating user input in the retrieve articles route
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ * @param {Function} Middleware function with access to req and res Objects
+ *
+ */
 exports.fetchArticles = function(req, res, next) {
     retrieveArticlesSchema
         .validate(req.query, { abortEarly: false })
@@ -142,7 +162,14 @@ exports.fetchArticles = function(req, res, next) {
             next(new Error(errorMessage));
         });
 };
-
+/**
+ * @description Will be exposed as middleware for validating user input in the delete article route
+ *
+ * @param {Object} req HTTP Request Object
+ * @param {Object} res HTTP Response Object
+ * @param {Function} Middleware function with access to req and res Objects
+ *
+ */
 exports.deleteArticle = function(req, res, next) {
     deleteArticleSchema
         .validate(req.param, { abortEarly: false })
