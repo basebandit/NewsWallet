@@ -1,7 +1,12 @@
-// /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "Category" }]*/
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
+/**
+ *
+ * @author basebandit
+ *
+ * @description Article schema
+ */
 
 const ArticleSchema = new Schema(
     {
