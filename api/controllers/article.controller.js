@@ -143,16 +143,30 @@ exports.deleteArticle = async (req, res, next) => {
         if (article) {
             return res.status(200).json({ message: "delete successful" });
         }
-        res.status(404).json("no such article");
+        // res.status(404).json("no such article");
+        return next(new Error("No such article"));
     } catch (err) {
         next(err);
     }
 };
-// exports.favoriteArticles = async (req, res, next) => {
-//     try{
-//  let favoriteArticle = await
-//     }catch(err){
-//         next(err);
-//     }
-// };
-// exports.favoriteArticles = async (req, res, next) => {};
+exports.favoriteArticle = async (req, res, next) => {
+    const articleSlug = req.params.slug;
+    try {
+        const article = Article.findOne({ slug: articleSlug });
+        //If such an article exists mark it as favorite
+        if (article) {
+            let favoritedArticle = await article.incFavoritesCount();
+
+            //If successful then return
+            if (favoritedArticle) {
+                return res.status(200).json({ message: "Article marked as favorite" });
+            }
+
+            return next(new Error("Could not mark article as favorite"));
+        } else {
+            return next(new Error("No such article found"));
+        }
+    } catch (err) {
+        next(err);
+    }
+};
