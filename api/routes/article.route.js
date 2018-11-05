@@ -4,6 +4,13 @@ const validate = require("../services/validate.service");
 const express = require("express");
 const multer = require("multer");
 
+/**
+ *
+ * @author basebandit
+ *
+ * @description Article routes
+ */
+
 const router = express.Router();
 
 /**
