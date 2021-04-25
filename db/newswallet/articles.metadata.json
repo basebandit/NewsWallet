@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"newswallet.articles"},{"v":2,"unique":true,"key":{"originUrl":1},"name":"originUrl_1","ns":"newswallet.articles","background":true}]}
